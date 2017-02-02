@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.13" icons="true">  
+  <object id="1" language="java" name="edu.mtu.simulation.ForestSim" project="ForstSim" 
+    file="/ForstSim/src/edu/mtu/simulation/ForestSim.java" binary="false" label="forestSim" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="175" y="0"/>    
+    <execution id="2">      
+      <position height="303" width="0" x="0" y="163"/>    
+    </execution>    
+    <execution id="6">      
+      <position height="250" width="0" x="0" y="195"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="84" width="0" x="0" y="361"/>    
+    </execution>    
+    <execution id="11">      
+      <position height="21" width="0" x="0" y="403"/>    
+    </execution>    
+    <execution id="8">      
+      <position height="21" width="7" x="52" y="403"/>    
+    </execution>  
+  </object>  
+  <object id="12" language="java" name="edu.mtu.models.growthmodels.GrowthModel" project="ForstSim" 
+    file="/ForstSim/src/edu/mtu/models/growthmodels/GrowthModel.java" binary="false" label="growthModel" 
+    type="interface" autoSize="true">    
+    <position height="-1" width="-1" x="286" y="0"/>    
+    <execution id="4">      
+      <position height="84" width="0" x="0" y="184"/>    
+    </execution>    
+    <execution id="14">      
+      <position height="21" width="0" x="0" y="226"/>    
+    </execution>  
+  </object>  
+  <message id="3" asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" operation="start():void" asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="7" asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="10" operation="createAgents():void" asynchronous="false">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="13" operation="calculateInitialStands():void" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>
+</sequence-diagram>
