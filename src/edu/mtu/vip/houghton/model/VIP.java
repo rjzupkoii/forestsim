@@ -17,12 +17,13 @@ public class VIP {
 	private final static double baseMillageRate = 2.5;
 	
 	private Boolean isActive = true;
+	private Boolean isBonusActive = true;
 	private double agglomerationBonus = 0.1;
-	private int mustHarvestBy = 40;
-	private double millageRate = baseMillageRate;
-	private int subscriptions = 0;
 	private double acres = 0;
-	
+	private double millageRate = baseMillageRate;
+	private int mustHarvestBy = 40;
+	private int subscriptions = 0;
+		
 	/**
 	 * Constructor.
 	 */
@@ -37,7 +38,9 @@ public class VIP {
 		acres += (parcel.length * Forest.getInstance().getPixelArea()); 
 		
 		// Update the millage
-		millageRate = baseMillageRate + ((int)(subscriptions / 1000)) * agglomerationBonus;
+		if (isBonusActive) {
+			millageRate = baseMillageRate + ((int)(subscriptions / 1000)) * agglomerationBonus;
+		}
 	}
 	
 	/**
@@ -53,6 +56,11 @@ public class VIP {
 	public double getAgglomerationBonus() { return agglomerationBonus; }
 	
 	/**
+	 * Returns true if the agglomeration bonus is active, false otherwise.
+	 */
+	public Boolean getIsBonusActive() { return isBonusActive; }
+	
+	/**
 	 * Returns true if the VIP is active, false otherwise.
 	 */
 	public Boolean getIsActive() { return isActive; }
@@ -60,30 +68,22 @@ public class VIP {
 	/**
 	 * Get the millage rate reduction for joining.
 	 */
-	public double getMillageRateReduction() {
-		return millageRate;
-	}
+	public double getMillageRateReduction() { return millageRate; }
 		
 	/**
 	 * Return the number of subscriptions in the VIP.
 	 */
-	public int getSubscriptionRate() {
-		return subscriptions;
-	}
+	public int getSubscriptionRate() { return subscriptions; }
 	
 	/**
 	 * Get the subscribed area for the VIP.
 	 */
-	public double getSubscribedArea() {
-		return acres;
-	}
+	public double getSubscribedArea() { return acres; }
 	
 	/**
 	 * Return the number of years since last harvest that the member must harvest at.
 	 */
-	public int getMustHarvestBy() {
-		return mustHarvestBy;
-	}
+	public int getMustHarvestBy() { return mustHarvestBy; }
 	
 	/**
 	 * Reset the the VIP in preparation for a new run.
@@ -103,6 +103,11 @@ public class VIP {
 	 * Set the VIP to true if it is active, false otherwise.
 	 */
 	public void setIsActive(Boolean value) { isActive = value; }
+	
+	/**
+	 * Set to true if the agglomeration bonus is active, false otherwise.
+	 */
+	public void setIsBonusActive(Boolean value) { isBonusActive = value; }
 	
 	/**
 	 * Set the year that a stand must be harvested by.
