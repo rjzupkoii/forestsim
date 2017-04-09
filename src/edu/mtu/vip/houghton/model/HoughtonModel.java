@@ -1,4 +1,4 @@
-package edu.mtu.vip.houghton;
+package edu.mtu.vip.houghton.model;
 
 import ec.util.MersenneTwisterFast;
 import edu.mtu.environment.GrowthModel;

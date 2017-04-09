@@ -1,4 +1,4 @@
-package edu.mtu.vip.houghton;
+package edu.mtu.vip.houghton.model;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

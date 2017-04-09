@@ -1,6 +1,7 @@
 package edu.mtu.vip.houghton;
 
 import edu.mtu.simulation.ForestSim;
+import edu.mtu.vip.houghton.model.HoughtonModel;
 
 public class ModelNoUi {
 	/**
