@@ -4,7 +4,7 @@ public class Parameters {
 	
 	public static final String defaultCoverFile 		= "shapefiles/Houghton Land Cover/houghtonlandcover.asc";
 	public static final String defaultParcelFile 		= "file:shapefiles/Houghton Parcels/houghton_parcels.shp";
-	public static final String defaultOutputDirectory 	= "out/vip-bonus"; 
+	public static final String defaultOutputDirectory 	= "out/current"; 
 	
 	// Based upon yellowbook listings http://www.yellowbook.com/s/logging-companies/surrounding-houghton-county-mi/
 	public final static int loggingCompanies = 24;		

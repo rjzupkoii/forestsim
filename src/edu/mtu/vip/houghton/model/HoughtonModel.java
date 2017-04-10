@@ -25,8 +25,8 @@ public class HoughtonModel extends ForestSim {
 		super(seed);
 		
 		// Various policy settings
-		parameters.setVipEnabled(true);
-		parameters.setVipBonusEnabled(true);
+		parameters.setVipEnabled(false);
+		parameters.setVipBonusEnabled(false);
 	}
 
 	@Override
