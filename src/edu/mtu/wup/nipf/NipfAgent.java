@@ -38,13 +38,18 @@ public abstract class NipfAgent extends ParcelAgent {
 	
 	@Override
 	protected void doPolicyOperation() {
+		VIP vip = VIP.getInstance();
+		if (getParcelArea() < vip.getMinimumAcerage()) {
+			return;
+		}
+		
 		// Return if there is no VIP
-		if (!VIP.getInstance().getIsActive()) {
+		if (!vip.getIsActive()) {
 			return;
 		}
 
 		// Return if the VIP is not introduced
-		if (!VIP.getInstance().isIntroduced()) {
+		if (!vip.isIntroduced()) {
 			return;
 		}
 		
@@ -77,6 +82,11 @@ public abstract class NipfAgent extends ParcelAgent {
 	protected void investigateHarvesting() {
 		if (minimumDbh == 0) {
 			throw new IllegalArgumentException("Minimum DBH cannot be zero.");
+		}
+		
+		// Nobody will work with us if the parcel is too small
+		if (getParcelArea() < AggregateHarvester.MinimumHarvestArea) {
+			return;
 		}
 		
 		// Now determine what sort of DBH we will harvest at

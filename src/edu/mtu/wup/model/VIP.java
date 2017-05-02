@@ -25,7 +25,7 @@ public class VIP extends PolicyBase {
 	private final static double baseMillageRate = 10;
 	
 	// MI CFP is set at 40 ac, QFP starts at 20 ac but is based upon stocking
-	private final static int baseMinimumAcerage = 10;
+	public final static int baseMinimumAcerage = 20;
 	
 	private final static int contractDuration = 5;
 	
