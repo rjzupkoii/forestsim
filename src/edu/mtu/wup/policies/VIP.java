@@ -1,4 +1,4 @@
-package edu.mtu.wup.model;
+package edu.mtu.wup.policies;
 
 import java.awt.Point;
 import java.util.List;
@@ -7,6 +7,7 @@ import edu.mtu.environment.Forest;
 import edu.mtu.policy.PolicyBase;
 import edu.mtu.simulation.ForestSim;
 import edu.mtu.steppables.ParcelAgent;
+import edu.mtu.wup.model.Harvesting;
 import edu.mtu.wup.nipf.NipfAgent;
 
 /**

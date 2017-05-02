@@ -8,6 +8,7 @@ import edu.mtu.simulation.Scorecard;
 import edu.mtu.steppables.ParcelAgent;
 import edu.mtu.wup.nipf.EconomicAgent;
 import edu.mtu.wup.nipf.EcosystemsAgent;
+import edu.mtu.wup.policies.VIP;
 
 /**
  * This is an aggregate model of the Western Upper Peninsula of Michigan, USA. 

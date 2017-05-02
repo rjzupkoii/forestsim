@@ -8,7 +8,7 @@ import edu.mtu.steppables.ParcelAgent;
 import edu.mtu.steppables.ParcelAgentType;
 import edu.mtu.steppables.marketplace.AggregateHarvester;
 import edu.mtu.wup.model.Harvesting;
-import edu.mtu.wup.model.VIP;
+import edu.mtu.wup.policies.VIP;
 
 @SuppressWarnings("serial")
 public abstract class NipfAgent extends ParcelAgent {
@@ -38,7 +38,7 @@ public abstract class NipfAgent extends ParcelAgent {
 	
 	@Override
 	protected void doPolicyOperation() {
-		VIP vip = VIP.getInstance();
+		VIP vip = (VIP)state.getPolicy();
 		if (getParcelArea() < vip.getMinimumAcerage()) {
 			return;
 		}
@@ -86,6 +86,10 @@ public abstract class NipfAgent extends ParcelAgent {
 		state.updateAgentGeography(this);
 	}
 
+	protected VIP getVip() {
+		return (VIP)state.getPolicy();
+	}
+	
 	protected void unenrollInVip() {
 		vipEnrollee = false;
 		vipAge = 0;

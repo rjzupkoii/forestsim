@@ -3,7 +3,6 @@ package edu.mtu.wup.nipf;
 import edu.mtu.steppables.ParcelAgentType;
 import edu.mtu.wup.model.Economics;
 import edu.mtu.wup.model.Harvesting;
-import edu.mtu.wup.model.VIP;
 
 @SuppressWarnings("serial")
 public class EconomicAgent extends NipfAgent {
@@ -27,8 +26,8 @@ public class EconomicAgent extends NipfAgent {
 		// Compare the preferred method of harvesting to the programs
 		double millage = getMillageRate();
 		double prefered = projectProfit(minimumDbh, millage);
-		millage -= VIP.getInstance().getMillageRateReduction(this, state);
-		double program = projectProfit(VIP.getInstance().getMinimumHarvestingDbh(), millage);
+		millage -= getVip().getMillageRateReduction(this, state);
+		double program = projectProfit(getVip().getMinimumHarvestingDbh(), millage);
 		if (program > prefered) {
 			enrollInVip();
 		}

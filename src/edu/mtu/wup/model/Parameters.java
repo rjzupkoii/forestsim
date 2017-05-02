@@ -1,6 +1,7 @@
 package edu.mtu.wup.model;
 
 import edu.mtu.simulation.parameters.ParameterBase;
+import edu.mtu.wup.policies.VIP;
 
 public class Parameters extends ParameterBase {
 	// Path to default GIS files used in the simulation

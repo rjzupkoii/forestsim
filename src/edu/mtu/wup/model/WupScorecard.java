@@ -12,6 +12,7 @@ import edu.mtu.simulation.Scorecard;
 import edu.mtu.steppables.ParcelAgent;
 import edu.mtu.steppables.marketplace.AggregateHarvester;
 import edu.mtu.utilities.Constants;
+import edu.mtu.wup.policies.VIP;
 import sim.field.geo.GeomGridField;
 import sim.io.geo.ArcInfoASCGridExporter;
 
