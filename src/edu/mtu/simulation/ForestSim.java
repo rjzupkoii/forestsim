@@ -146,7 +146,7 @@ public abstract class ForestSim extends SimState {
 		doLoop(model, args);
 		System.exit(0);
 	}
-	
+		
 	/**
 	 * Get the agents that are neighbors of the given agent.
 	 * 

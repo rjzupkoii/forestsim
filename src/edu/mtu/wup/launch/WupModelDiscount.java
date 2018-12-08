@@ -15,7 +15,14 @@ public class WupModelDiscount extends WupModel {
 	 */
 	public WupModelDiscount(long seed) {
 		super(seed);
-		parameters.setSeed(seed);
+		
+		try {
+			parameters.setSeed(seed);
+			parameters.readFile(WupParameters.defaultSettingsFile);
+		} catch (Exception ex) {
+			System.err.println("Error loading the model.");
+			System.exit(-1);
+		}
 	}
 
 	@Override

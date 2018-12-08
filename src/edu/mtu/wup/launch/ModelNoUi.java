@@ -12,21 +12,27 @@ public class ModelNoUi {
 			return;
 		}
 		
-		switch (args[0]) {
-		case "-none":
-			System.out.println("Starting WUP model with no VIP.");
-			ForestSim.load(WupModelNone.class, args);
-			break;
-		case "-discount":
-			System.out.println("Starting WUP model with discount VIP.");
-			ForestSim.load(WupModelDiscount.class, args);
-			break;
-		case "-agglomeration":
-			System.out.println("Starting WUP model with agglomeration VIP.");
-			ForestSim.load(WupModelAgglomeration.class, args);
-			break;
-		default:
-			System.err.println("ForestSim, LUP: First parameter must be the model!");
+		@SuppressWarnings("rawtypes")
+		Class mode = null;
+		
+		// Parse out the arguments
+		for (int ndx = 0; ndx < args.length; ndx++) {
+			switch (args[ndx]) {
+						
+			// Various model modes
+			case "--none":
+				System.out.println("Starting WUP model with no VIP.");
+				mode = WupModelNone.class;
+			case "--discount":
+				System.out.println("Starting WUP model with discount VIP.");
+				mode = WupModelDiscount.class;
+			case "--agglomeration":
+				System.out.println("Starting WUP model with agglomeration VIP.");
+				mode = WupModelAgglomeration.class;
+			}
 		}
+		
+		// Execute the model
+		ForestSim.load(mode, args);
 	}
 }

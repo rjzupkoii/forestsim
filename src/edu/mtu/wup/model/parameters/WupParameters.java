@@ -1,5 +1,12 @@
 package edu.mtu.wup.model.parameters;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.prefs.Preferences;
+
+import org.ini4j.Ini;
+import org.ini4j.IniPreferences;
+import org.ini4j.InvalidFileFormatException;
 import org.javatuples.Pair;
 
 import edu.mtu.simulation.parameters.ParameterBase;
@@ -10,6 +17,8 @@ public abstract class WupParameters extends ParameterBase {
 	// Path to default GIS files used in the simulation
 	public static final String defaultCoverFile = "shapefiles/WUP Land Cover/WUPLandCover.asc";
 	public static final String defaultParcelFile = "file:shapefiles/WUP Parcels/WUPParcels.shp";
+	
+	public static final String defaultSettingsFile = "settings.ini";
 	
 	/**
 	 * Land Tenure phase in rate for the model.
@@ -37,6 +46,19 @@ public abstract class WupParameters extends ParameterBase {
 	private String outputDirectory = null;
 	private VipRegime vip;
 			
+	/***
+	 * Read the settings in the file, use them to override 
+	 * anything that is currently set.
+	 * 
+	 * @param fileName The full path of the file (ini format) to be read.
+	 */
+	public void readFile(String fileName) throws InvalidFileFormatException, IOException {
+		Ini ini = new Ini(new File(fileName));
+		Preferences prefs = new IniPreferences(ini);
+		int logging = Integer.parseInt(prefs.node("settings").get("logging", null));
+		setLoggingCapacity(logging);
+	}
+	
 	/**
 	 * Get the odds that an ecosystems NIPFO will harvest.
 	 */
