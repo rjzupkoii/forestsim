@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import edu.mtu.measures.ForestMeasures;
 import edu.mtu.measures.ForestMeasuresParallel;
 import edu.mtu.simulation.ForestSim;
 import edu.mtu.simulation.Scorecard;
@@ -129,10 +130,12 @@ public class WupScorecard implements Scorecard {
 	// Environment: Carbon Sequestration
 	private void writeCarbonSequestration(List<ParcelAgent> agents) throws IOException, InterruptedException {		
 		double biomass = ForestMeasuresParallel.calculateBiomass();
+//		double biomass = ForestMeasures.calculateTotalBiomass();
 		double carbon = carbonInBiomassEstiamte(biomass);
 		writers[Indicators.CarbonGlobal.getValue()].write(carbon);
 		
 		biomass = ForestMeasuresParallel.calculateBiomass(agents);
+//		biomass = ForestMeasures.calculateTotalAgentBiomass(agents);
 		carbon = carbonInBiomassEstiamte(biomass);
 		writers[Indicators.CarbonAgents.getValue()].write(carbon);
 	}

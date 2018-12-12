@@ -158,13 +158,12 @@ public class ForestMeasures {
 	 * @return The total biomass for the forest in green tons (GT)
 	 */
 	public static double calculateTotalBiomass() {
-		Forest forest = Forest.getInstance();
-		GeomGridField landCover = forest.getLandCover();
-		
 		double biomass = 0;
-		for (int ndx = 0; ndx < landCover.getGridWidth(); ndx++) {
-			for (int ndy = 0; ndy < landCover.getGridHeight(); ndy++) {
-				biomass += calculateBiomass(new Point(ndx, ndy)); 
+		
+		Forest forest = Forest.getInstance();
+		for (int ndx = 0; ndx < forest.getMapWidth(); ndx++) {
+			for (int ndy = 0; ndy < forest.getMapHeight(); ndy++) {
+				biomass += calculateBiomass(ndx, ndy);
 			}
 		}
 		return biomass;

@@ -23,12 +23,15 @@ public class ModelNoUi {
 			case "--none":
 				System.out.println("Starting WUP model with no VIP.");
 				mode = WupModelNone.class;
+				break;
 			case "--discount":
 				System.out.println("Starting WUP model with discount VIP.");
 				mode = WupModelDiscount.class;
+				break;
 			case "--agglomeration":
 				System.out.println("Starting WUP model with agglomeration VIP.");
 				mode = WupModelAgglomeration.class;
+				break;
 			}
 		}
 		
