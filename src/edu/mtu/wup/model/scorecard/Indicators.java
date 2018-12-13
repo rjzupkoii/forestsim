@@ -12,7 +12,10 @@ public enum Indicators {
 	VipAwareness(6, "/vipAwareness.csv"),
 	VipEnrollment(7, "/vipEnrollment.csv"),
 	
-	RecreationAccess(8, "/recreationAccess.csv");
+	RecreationAccess(8, "/recreationAccess.csv"),
+	
+	HarvestCapacity(9, "/harvestCapacity.csv"),
+	EconomicRequests(10, "/economicRequests.csv");
 	
 	public final static int IndicatorCount = Indicators.values().length;
 

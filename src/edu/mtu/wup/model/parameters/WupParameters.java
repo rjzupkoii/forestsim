@@ -23,7 +23,7 @@ public abstract class WupParameters extends ParameterBase {
 	/**
 	 * Land Tenure phase in rate for the model.
 	 */
-	public final static double LandTenurePhaseInRate = 0.02;
+	public final static double LandTenurePhaseInRate = 0.02;	// roughly 40 years
 	
 	/**
 	 * Base millage rate for the model.

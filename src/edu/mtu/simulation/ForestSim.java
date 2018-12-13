@@ -382,14 +382,57 @@ public abstract class ForestSim extends SimState {
 	 */
 	protected ParcelAgent createAgent(LandUseGeomWrapper lu, double probablity) {
 		ParcelAgent agent;
-		if (random.nextDouble() < probablity) {
+		
+		// Create the agent parcel
+		IntBag xPos = new IntBag();
+		IntBag yPos = new IntBag();
+		createAgentParcel(lu.geometry, xPos, yPos);
+		double area = xPos.size() * Forest.getInstance().getAcresPerPixel();
+		
+		// Economic optimizers need at least 40 ac
+		if (area >= 40.0 && random.nextDouble() < probablity) {
 			agent = createEconomicAgent(random, lu);
 		} else {
 			 agent = createEcosystemsAgent(random, lu);
 		}
-		agent = createAgentParcel(agent);
+		agent.createCoverPoints(xPos, yPos);
 		agent.getGeometry().updateShpaefile();
 		return agent;
+	}
+	
+	private void createAgentParcel(Geometry geometry, IntBag xPos, IntBag yPos) {
+
+		// The bounding rectangle of the agent's parcel converted to an IntGrid2D index (min and max)
+		int xMin = coverLayer.toXCoord(geometry.getEnvelopeInternal().getMinX());
+		int yMin = coverLayer.toYCoord(geometry.getEnvelopeInternal().getMinY());
+		int xMax = coverLayer.toXCoord(geometry.getEnvelopeInternal().getMaxX());
+		int yMax = coverLayer.toYCoord(geometry.getEnvelopeInternal().getMaxY());
+
+		// Search all the pixels in the agent's parcel's bounding rectangle
+		for (int x = xMin; x <= xMax; x++) {
+			for (int y = yMax; y <= yMin; y++) {
+				// Skip ahead if the index is negative (no pixels here)
+				if (x < 0 || y < 0) {
+					continue;
+				}
+
+				// Get the value of the land cover at the current index
+				int value = ((IntGrid2D) coverLayer.getGrid()).get(x, y);
+
+				// Move to the next if this pixel is not woody biomass
+				if (!NlcdClassification.isWoodyBiomass(value)) {
+					continue;
+				}
+
+				// Determine if the agent's parcel covers the current pixel
+				Point point = coverLayer.toPoint(x, y);
+				if (geometry.covers(point)) {
+					// Store the index if the parcel covers the pixel
+					xPos.add(x);
+					yPos.add(y);
+				}
+			}
+		}
 	}
 
 	/**

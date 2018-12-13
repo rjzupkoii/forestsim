@@ -20,7 +20,9 @@ public class EconomicAgent extends NipfAgent {
 	
 	private double rate = 0.0;	
 	private double targetHarvest = -1;
+	
 	private long nextHarvest = -1;
+	private long nextNpv = -1;
 		
 	/**
 	 * Constructor.
@@ -45,24 +47,30 @@ public class EconomicAgent extends NipfAgent {
 	
 	@Override
 	protected void doHarvestOperation() {
-		// Calculate what our target harvest is
-		// TODO parcel size shoudl always be 40 ac
+		
+		// We always want to harvest our entire parcel, not realistic, but meh
 		if (targetHarvest == -1) {
-			targetHarvest = getParcelArea() < 40.0 ? getParcelArea() : 40.0;
+			targetHarvest = getParcelArea();
 		}
 		
-		// Determine when the next harvest should be
-		if (nextHarvest == -1) {
+		// If we haven't determined when the next NVP calculation should be, do so
+		if (nextNpv == -1) {
+			nextNpv = projectNvp();
+			nextNpv = (nextNpv != -1) ? state.schedule.getSteps() + nextNpv : -1;
+		}
+		
+		// Should we do a harvest projection?
+		if (nextNpv >= state.schedule.getSteps()) {
 			projectHarvests();
 			
 			// Shouldn't happen, edge case
-			if (nextHarvest == -1){
+			if (nextHarvest == -1) {
 				return;
 			}
 		}
-			
+		
 		// If it is time for the next harvest, do so
-		if (state.schedule.getSteps() >= nextHarvest) {
+		if (nextHarvest != -1 && state.schedule.getSteps() >= nextHarvest) {
 			List<Stand> stands = Harvesting.getHarvestableStands(getParcel(), getHarvestDbh());
 			AggregateHarvester.getInstance().requestHarvest(this, stands);
 		}
@@ -71,12 +79,60 @@ public class EconomicAgent extends NipfAgent {
 	@Override
 	public void doHarvestedOperation() {
 		super.doHarvestedOperation();
-		nextHarvest = -1;		
+		nextHarvest = -1;
+		nextNpv = -1;
 	}
 
 	@Override
 	protected double getMinimumDbh() {
 		return Harvesting.SawtimberDbh;
+	}
+	
+	/**
+	 * Project when the next NVP calculation should be, basically when the mean DBH 
+	 * for our parcels is at least pulpwood.
+	 * 
+	 * @return Number of time steps from now.
+	 */
+	private int projectNvp() {
+		// Note the stands for the projection
+		Forest forest = Forest.getInstance();
+		Point[] points = getParcel();
+		Stand[] projection = new Stand[points.length];
+		for (int ndx = 0; ndx < points.length; ndx++) {
+			projection[ndx] = forest.getStand(points[ndx]);
+		}
+		
+		// Prime things with the current year
+		double[] values = new double[projectionWindow];
+		values[0] = getMean(projection);
+		
+		for (int ndx = 1; ndx < projectionWindow; ndx++) {
+			// Check the previous years work
+			if (values[ndx - 1] >= Harvesting.PulpwoodDbh) {
+				return (ndx - 1);
+			}
+			
+			// Advance by one year
+			for (int ndy = 0; ndy < projection.length; ndy++) {
+				projection[ndy] = forest.getGrowthModel().growStand(projection[ndy]);
+			}
+			values[ndx] = getMean(projection);
+		}
+		
+		// In theory, impossible, but guard code
+		return -1;
+	}
+	
+	/**
+	 * Calculate the mean DBH for the parcel provided.
+	 */
+	private double getMean(Stand[] projection) {
+		double dbh = 0;
+		for (Stand stand : projection) {
+			dbh += stand.arithmeticMeanDiameter;
+		}
+		return (dbh / projection.length);
 	}
 	
 	/**

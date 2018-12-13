@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import edu.mtu.measures.ForestMeasures;
 import edu.mtu.measures.ForestMeasuresParallel;
 import edu.mtu.simulation.ForestSim;
 import edu.mtu.simulation.Scorecard;
@@ -13,6 +12,7 @@ import edu.mtu.steppables.ParcelAgent;
 import edu.mtu.steppables.marketplace.AggregateHarvester;
 import edu.mtu.utilities.BufferedCsvWriter;
 import edu.mtu.utilities.Constants;
+import edu.mtu.wup.model.parameters.WupParameters;
 import edu.mtu.wup.vip.VipBase;
 import edu.mtu.wup.vip.VipFactory;
 import sim.field.geo.GeomVectorField;
@@ -41,6 +41,7 @@ public class WupScorecard implements Scorecard {
 			writeCarbonSequestration(state.getParcelAgents());
 			writeHarvesting();
 			writeRecreationalAccess();
+			writeCapacity(state);
 			
 			// Check the step and flush and export GIS as needed
 			if (state.schedule.getSteps() % captureInterval == 0) {
@@ -130,12 +131,10 @@ public class WupScorecard implements Scorecard {
 	// Environment: Carbon Sequestration
 	private void writeCarbonSequestration(List<ParcelAgent> agents) throws IOException, InterruptedException {		
 		double biomass = ForestMeasuresParallel.calculateBiomass();
-//		double biomass = ForestMeasures.calculateTotalBiomass();
 		double carbon = carbonInBiomassEstiamte(biomass);
 		writers[Indicators.CarbonGlobal.getValue()].write(carbon);
 		
 		biomass = ForestMeasuresParallel.calculateBiomass(agents);
-//		biomass = ForestMeasures.calculateTotalAgentBiomass(agents);
 		carbon = carbonInBiomassEstiamte(biomass);
 		writers[Indicators.CarbonAgents.getValue()].write(carbon);
 	}
@@ -152,5 +151,13 @@ public class WupScorecard implements Scorecard {
 		        
 		writers[Indicators.HarvestDemand.getValue()].write(harvester.getHarvestedRequested());
 		writers[Indicators.HarvestedParcels.getValue()].write(harvester.getPracelsHarvested());
+		
+		writers[Indicators.EconomicRequests.getValue()].write(harvester.getEconomicAgentRequests());
+		harvester.resetEconomicAgentRequests();		// This is a bad hack
+	}
+	
+	private void writeCapacity(ForestSim state) throws IOException {
+		WupParameters parameters = (WupParameters)state.getParameters();
+		writers[Indicators.HarvestCapacity.getValue()].write(parameters.getLoggingCapacity());
 	}
 }

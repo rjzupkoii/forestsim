@@ -30,10 +30,10 @@ public class EcosystemsAgent extends NipfAgent {
 		// If they are a VIP enrollee, see if they need to renew or not
 		if (inVip() && vipHarvested) {
 			// Once harvested, unenroll at the same likelihood to harvest
-//			if (harvestOdds < state.random.nextDouble()) {
-//				unenrollInVip();
-//				return;
-//			}
+			if (harvestOdds < state.random.nextDouble()) {
+				unenrollInVip();
+				return;
+			}
 		}
 		
 		// Does the agent ever intend to harvest?

@@ -20,7 +20,7 @@ public class NoneParameters extends WupParameters {
 		setMooIntendsToHavestOdds(0.26);			// 18% of all NIPFOs
 		setNipfoWth(523.23, 123.12);
 		
-		setLoggingCapacity(2500);					// About 10% of the NIPFOs
+		setLoggingCapacity(2000);					// Roughly 10%
 		
 		// Set the ForestSim configuration
 		setPolicyActiviationStep(60);				// We expect agents to be fully activated by T+50

@@ -99,12 +99,15 @@ analysis('carbonGlobal', 'Global Carbon Sequestration', expression('Metric Tons 
 
 harvestAnalysis('Harvested Biomass & Stems', 'Metric Tons (MT) Dry Weight', T)
 analysis('harvestDemand', 'Harvest Demand', 'Owners', F)
+analysis('harvestCapacity', 'Harvest Capacity', 'Parcels', F)
 analysis('harvestedParcels', 'Harvested Parcels', 'Owners', F)
-#analysis('harvestedBiomass', 'Harvested Biomass', 'Metric Tons (MT) Dry Weight', T)
-#analysis('harvestedStems', 'Harvested Stems', 'Metric Tons (MT) Dry Weight', T)
+analysis('economicRequests', 'Economic Optimizer Harvest Reqeusts', 'Parcels / Owners', F)
 
 analysis('vipAwareness', 'VIP Awareness', 'NIPFOs', F)
 analysis('vipEnrollment', 'VIP Enrollment', 'NIPFOs', F)
 
 analysis('recreationAccess', 'Open Access Forest', 'Forest Area (sq. km.)', F)
+
+#analysis('harvestedBiomass', 'Harvested Biomass', 'Metric Tons (MT) Dry Weight', T)
+#analysis('harvestedStems', 'Harvested Stems', 'Metric Tons (MT) Dry Weight', T)
 

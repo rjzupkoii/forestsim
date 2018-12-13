@@ -9,7 +9,10 @@ import org.javatuples.Pair;
 import edu.mtu.environment.Forest;
 import edu.mtu.environment.Stand;
 import edu.mtu.simulation.ForestSim;
+import edu.mtu.simulation.parameters.ParameterBase;
 import edu.mtu.steppables.ParcelAgent;
+import edu.mtu.steppables.ParcelAgentType;
+import edu.mtu.wup.model.parameters.WupParameters;
 import edu.mtu.wup.vip.VipBase;
 import sim.engine.SimState;
 import sim.engine.Steppable;
@@ -28,7 +31,9 @@ public class AggregateHarvester implements Steppable {
 	private double stemBiomass;
 	private double totalBiomass;
 	private int harvestsRequested;
-	private int pracelsHarvested;
+	private int parcelsHarvested;
+	
+	private int economicAgentRequest = 0;
 	
 	/**
 	 * Constructor.
@@ -40,8 +45,23 @@ public class AggregateHarvester implements Steppable {
 	 */
 	public void step(SimState state) {
 		int capacity = ((ForestSim)state).getHarvestCapacity();
-		processHarvestRequests(capacity);
+		int difference = processHarvestRequests(capacity);
+		
+		// If T+50 then start updating the "marketplace"
+		double multiplier = (difference > 0) ? 0.05 : 0.1;
+		capacity += (int)((double)difference * multiplier);
+		ParameterBase parameters = ((ForestSim)state).getParameters();
+		((WupParameters)parameters).setLoggingCapacity(capacity);	
 	}
+	
+	public int getEconomicAgentRequests() {
+		return economicAgentRequest;
+	}
+	
+	public void resetEconomicAgentRequests() {
+		economicAgentRequest = 0;
+	}
+	
 	
 	/**
 	 * Get the stem biomass, in kg (dry weight) 
@@ -69,7 +89,7 @@ public class AggregateHarvester implements Steppable {
 	 * Get the number of parcels harvested.
 	 */
 	public int getPracelsHarvested() {
-		return pracelsHarvested;
+		return parcelsHarvested;
 	}
 	
 	/**
@@ -95,13 +115,13 @@ public class AggregateHarvester implements Steppable {
 	 * @param capacity The total capacity for harvests.
 	 * @return The total biomass harvested in kilograms dry weight (kg)
 	 */
-	protected void processHarvestRequests(int capacity) {
+	protected int processHarvestRequests(int capacity) {
 		harvestsRequested = requests.size();
 		
 		// Reset
 		stemBiomass = 0;
 		totalBiomass = 0;
-		pracelsHarvested = 0;
+		parcelsHarvested = 0;
 		
 		Forest forest = Forest.getInstance();		
 		while (!requests.isEmpty()) {
@@ -111,23 +131,20 @@ public class AggregateHarvester implements Steppable {
 			Pair<Double, Double> result = forest.harvest(request.stands);
 			stemBiomass += result.getValue0();
 			totalBiomass += result.getValue1();
-			pracelsHarvested++;
+			parcelsHarvested++;
 			
 			// Inform the agent
 			request.agent.doHarvestedOperation();
 			
-			// Return if we are done
-			if (pracelsHarvested >= capacity) {
+			// Break if we are done
+			if (parcelsHarvested >= capacity) {
 				requests.clear();
-				return;
+				break;
 			}
 		}
 		
-//		// Adjust the capacity based upon the demand, note that 5% is just a rough number for adjustments
-//		int difference = harvestsRequested - pracelsHarvested;
-//		int adjustment = (int)((double)difference * 0.05);
-//		capacity += adjustment;
-//		int capacity = ((ForestSim)state).getHarvestCapacity();
+		// Return the difference between requests and actual capacity
+		return (harvestsRequested - capacity);		
 	}
 	
 	/**
@@ -167,6 +184,10 @@ public class AggregateHarvester implements Steppable {
 		request.agent = agent;
 		request.stands = stand;
 		request.deliverTo = null;
+		
+		if (request.agent.getAgentType() == ParcelAgentType.ECONOMIC) {
+			economicAgentRequest++;
+		}
 		
 		// Queue it to be processed later
 		request.queueOrder = requests.size();
