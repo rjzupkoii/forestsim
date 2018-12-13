@@ -122,6 +122,12 @@ public class AggregateHarvester implements Steppable {
 				return;
 			}
 		}
+		
+//		// Adjust the capacity based upon the demand, note that 5% is just a rough number for adjustments
+//		int difference = harvestsRequested - pracelsHarvested;
+//		int adjustment = (int)((double)difference * 0.05);
+//		capacity += adjustment;
+//		int capacity = ((ForestSim)state).getHarvestCapacity();
 	}
 	
 	/**

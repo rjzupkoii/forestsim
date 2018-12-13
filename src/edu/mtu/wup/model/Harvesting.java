@@ -68,6 +68,7 @@ public class Harvesting {
 			
 			// Estimate the number of board feet using Scribner Decimal C log rule
 			double boardFeet = (0.79 * Math.pow(dbh, 2) - 2 * dbh - 4) * (height / 16);
+			boardFeet *= stand.numberOfTrees;
 			
 			// Convert to thousands of board feet for the bid
 			double mbf = boardFeet / 1000;

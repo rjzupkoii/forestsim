@@ -46,6 +46,7 @@ public class EconomicAgent extends NipfAgent {
 	@Override
 	protected void doHarvestOperation() {
 		// Calculate what our target harvest is
+		// TODO parcel size shoudl always be 40 ac
 		if (targetHarvest == -1) {
 			targetHarvest = getParcelArea() < 40.0 ? getParcelArea() : 40.0;
 		}
