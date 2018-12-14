@@ -15,7 +15,8 @@ public enum Indicators {
 	RecreationAccess(8, "/recreationAccess.csv"),
 	
 	HarvestCapacity(9, "/harvestCapacity.csv"),
-	EconomicRequests(10, "/economicRequests.csv");
+	EconomicRequests(10, "/economicRequests.csv"),
+	HarvestArea(11, "/harvestArea.csv");
 	
 	public final static int IndicatorCount = Indicators.values().length;
 

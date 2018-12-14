@@ -154,6 +154,8 @@ public class WupScorecard implements Scorecard {
 		
 		writers[Indicators.EconomicRequests.getValue()].write(harvester.getEconomicAgentRequests());
 		harvester.resetEconomicAgentRequests();		// This is a bad hack
+		
+		writers[Indicators.HarvestArea.getValue()].write(harvester.getTotalArea());
 	}
 	
 	private void writeCapacity(ForestSim state) throws IOException {

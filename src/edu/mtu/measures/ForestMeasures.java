@@ -8,7 +8,6 @@ import org.javatuples.Pair;
 import edu.mtu.environment.Forest;
 import edu.mtu.environment.Stand;
 import edu.mtu.steppables.ParcelAgent;
-import sim.field.geo.GeomGridField;
 
 /**
  * This class contains various measures related to the forest itself.
@@ -147,6 +146,9 @@ public class ForestMeasures {
 	public static double calculateTotalAgentBiomass(List<ParcelAgent> agents) {
 		double biomass = 0;
 		for (ParcelAgent agent : agents) {
+			if (agent == null) {
+				continue;
+			}
 			biomass += calculateStandBiomass(agent.getParcel());
 		}
 		return biomass;

@@ -26,18 +26,21 @@ public class EcosystemsAgent extends NipfAgent {
 
 	@Override
 	protected void doAgentPolicyOperation() {
-		
-		// If they are a VIP enrollee, see if they need to renew or not
-		if (inVip() && vipHarvested) {
-			// Once harvested, unenroll at the same likelihood to harvest
-			if (harvestOdds < state.random.nextDouble()) {
-				unenrollInVip();
-				return;
-			}
-		}
-		
-		// Does the agent ever intend to harvest?
+
+		// If we never intend to harvest, just return
 		if (!intendsToHarvest) {
+			return;
+		}
+
+		// Pre-calculate the odds of joining the VIP
+		// NOTE We are using a short-cut here: the rate reductions are 50 and 75
+		// NOTE so we just use those for the odds the VIP will enroll
+		VipBase vip = VipFactory.getInstance().getVip();
+		double odds = vip.getMillageRateReduction(this, state) / 100.0;
+
+		// Is this NIFPO concerned about taxes?
+		if (getTaxConcerns() && state.random.nextDouble() < odds) {
+			enrollInVip();
 			return;
 		}
 			
@@ -45,13 +48,9 @@ public class EcosystemsAgent extends NipfAgent {
 		if (harvestOdds < state.random.nextDouble()) {
 			return;
 		}
-						
-		// While we want lower taxes, we may not enroll regardless
-		// NOTE We are using a short-cut here: the rate reductions are 50 and 75
-		// NOTE so we just use those for the odds the VIP will enroll
-		VipBase vip = VipFactory.getInstance().getVip();
-		double odds = vip.getMillageRateReduction(this, state) / 100.0;
-		if (state.random.nextDouble() <= odds) {
+
+		// We are open to harvesting and don't care about taxes, so apply low odds of enrollment
+		if (state.random.nextDouble() < odds) {
 			enrollInVip();
 		}
 	}

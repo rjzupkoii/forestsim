@@ -4,8 +4,9 @@ require(ggplot2)
 require(reshape2)
 
 experiments = c('none', 'discount', 'agglomeration')
-policyIntroduction = 60
-timeSteps = 199
+burnIn = 49
+policyIntroduction = 149
+timeSteps = 299
 
 colSd <- function (x, na.rm = F) apply(X = x, MARGIN = 2, FUN = sd, na.rm = na.rm)
 
@@ -102,6 +103,7 @@ analysis('harvestDemand', 'Harvest Demand', 'Owners', F)
 analysis('harvestCapacity', 'Harvest Capacity', 'Parcels', F)
 analysis('harvestedParcels', 'Harvested Parcels', 'Owners', F)
 analysis('economicRequests', 'Economic Optimizer Harvest Reqeusts', 'Parcels / Owners', F)
+analysis('harvestArea', 'Harvested Area', 'acres', F)
 
 analysis('vipAwareness', 'VIP Awareness', 'NIPFOs', F)
 analysis('vipEnrollment', 'VIP Enrollment', 'NIPFOs', F)

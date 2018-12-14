@@ -23,7 +23,7 @@ public abstract class WupParameters extends ParameterBase {
 	/**
 	 * Land Tenure phase in rate for the model.
 	 */
-	public final static double LandTenurePhaseInRate = 0.02;	// roughly 40 years
+	public final static double LandTenurePhaseInRate = 1.0;	// Immediate activation
 	
 	/**
 	 * Base millage rate for the model.
@@ -41,6 +41,7 @@ public abstract class WupParameters extends ParameterBase {
 	private double mooIntendsToHavestOdds = 0.0;
 	private long seed = 0;
 
+	private Pair<Double, Double> nipfoTaxConcerns = Pair.with(0.626, 0.082);		// NWOS 2013, Michigan, Table MI-32, "More Favorable Tax Policies"
 	private Pair<Double, Double> economicNvpDiscountRate = Pair.with(0.0, 0.0);
 	private Pair<Double, Double> nipfoWth = Pair.with(0.0, 0.0);
 	private String outputDirectory = null;
@@ -64,6 +65,13 @@ public abstract class WupParameters extends ParameterBase {
 	 */
 	public double getEcosystemsAgentHarvestOdds() { 
 		return ecosystemsNipfoHarvestOdds; 
+	}
+	
+	/**
+	 * Percentage and error associated with NWOS data for tax concerns.
+	 */
+	public Pair<Double, Double> getNifpoTaxConcerns() {
+		return nipfoTaxConcerns;
 	}
 	
 	/**

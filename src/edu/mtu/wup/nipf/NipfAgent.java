@@ -18,6 +18,9 @@ public abstract class NipfAgent extends ParcelAgent {
 	private int vipCoolDown = 0;
 	private int vipCoolDownDuration = 0;
 	
+	// Individual attributes
+	private boolean taxConcern = false;
+	
 	// TODO Move these up to being set elsewhere
 	private final static double vipAwarenessRate = 0.25;		// The odds that the NIPFO will accept VIP information from neighbors
 	private final static double vipInformedRate = 0.026;		// The odds that the NIPFO will be informed of the VIP after activation
@@ -153,6 +156,20 @@ public abstract class NipfAgent extends ParcelAgent {
 		if (state.random.nextDouble() <= vipAwarenessRate) {
 			awareOfVip();
 		}
+	}
+
+	/**
+	 * Flag to indicate if the NIPFO is concerned about taxes.
+	 */	
+	public boolean getTaxConcerns() {
+		return taxConcern;
+	}
+	
+	/**
+	 * Flag to indicate if the NIPFO is concerned about taxes.
+	 */
+	public void setTaxConcerns(boolean value) {
+		taxConcern = value;
 	}
 	
 	/**

@@ -389,6 +389,11 @@ public abstract class ForestSim extends SimState {
 		createAgentParcel(lu.geometry, xPos, yPos);
 		double area = xPos.size() * Forest.getInstance().getAcresPerPixel();
 		
+		// Discard bad parcels with less than one pixel
+		if (xPos.size() == 0) {
+			return null;
+		}
+		
 		// Economic optimizers need at least 40 ac
 		if (area >= 40.0 && random.nextDouble() < probablity) {
 			agent = createEconomicAgent(random, lu);
@@ -490,6 +495,7 @@ public abstract class ForestSim extends SimState {
 	 * Create all of the agents that are used in the model.
 	 */
 	protected void createParcelAgents() {		
+		int discarded = 0;
 		Bag geometries = parcelLayer.getGeometries();
 		agents = new ParcelAgent[geometries.numObjs];
 		for (int ndx = 0; ndx < geometries.numObjs; ndx++) {
@@ -499,6 +505,10 @@ public abstract class ForestSim extends SimState {
 			
 			// Create the agent
 			ParcelAgent agent = createAgent(geometry, ((ParameterBase)getModelParameters()).getEconomicAgentPercentage());
+			if (agent == null) {
+				discarded++;
+				continue;
+			}
 			
 			// Update the global geometry with the agents updates
 			geometries.objs[ndx] = agent.getGeometry();
@@ -506,6 +516,11 @@ public abstract class ForestSim extends SimState {
 			// Schedule the agent
 			agents[ndx] = agent;
 			schedule.scheduleRepeating(agent);
+		}
+		
+		// If we discarded anything, let the user know
+		if (discarded != 0) {
+			System.err.println("WARNING: discarded " + discarded + " parcels due to invalid geometry.");
 		}
 	}
 	

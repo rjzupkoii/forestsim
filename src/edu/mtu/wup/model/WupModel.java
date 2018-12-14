@@ -82,7 +82,7 @@ public abstract class WupModel extends ForestSim {
 		Pair<Double, Double> rate = getParameters().getEconomicNvpDiscountRate();
 		double value = RandomDistribution.NormalDistribution(rate.getValue0(), rate.getValue1(), random);
 		agent.setDiscountRate(value);
-				
+						
 		return updateNipfAttributes(agent);
 	}
 
@@ -103,6 +103,11 @@ public abstract class WupModel extends ForestSim {
 		// Set the harvest odds, X~U(0, value)
 		value = getParameters().getEcosystemsAgentHarvestOdds() * random.nextDouble();
 		agent.setHarvestOdds(value);
+		
+		// Set the tax concerns, binary, but draw on N~N(mean, se)
+		Pair<Double, Double> rate = getParameters().getNifpoTaxConcerns();
+		double odds = RandomDistribution.NormalDistribution(rate.getValue0(), rate.getValue1(), random);
+		agent.setTaxConcerns(random.nextDouble() < odds);
 		
 		return updateNipfAttributes(agent);
 	}

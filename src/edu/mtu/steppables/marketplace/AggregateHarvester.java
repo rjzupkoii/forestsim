@@ -29,7 +29,9 @@ public class AggregateHarvester implements Steppable {
 	public final static double MinimumHarvestArea = VipBase.baseAcerage;		// Minimum area that can be harvested.
 	
 	private double stemBiomass;
+	private double totalArea;
 	private double totalBiomass;
+	
 	private int harvestsRequested;
 	private int parcelsHarvested;
 	
@@ -48,10 +50,12 @@ public class AggregateHarvester implements Steppable {
 		int difference = processHarvestRequests(capacity);
 		
 		// If T+50 then start updating the "marketplace"
-		double multiplier = (difference > 0) ? 0.05 : 0.1;
-		capacity += (int)((double)difference * multiplier);
-		ParameterBase parameters = ((ForestSim)state).getParameters();
-		((WupParameters)parameters).setLoggingCapacity(capacity);	
+		if (state.schedule.getSteps() > 50) {
+			double multiplier = (difference > 0) ? 0.05 : 0.1;
+			capacity += (int)((double)difference * multiplier);
+			ParameterBase parameters = ((ForestSim)state).getParameters();
+			((WupParameters)parameters).setLoggingCapacity(capacity);	
+		}
 	}
 	
 	public int getEconomicAgentRequests() {
@@ -60,8 +64,7 @@ public class AggregateHarvester implements Steppable {
 	
 	public void resetEconomicAgentRequests() {
 		economicAgentRequest = 0;
-	}
-	
+	}	
 	
 	/**
 	 * Get the stem biomass, in kg (dry weight) 
@@ -69,6 +72,13 @@ public class AggregateHarvester implements Steppable {
 	 */
 	public double getStemBiomass() {
 		return stemBiomass;
+	}
+	
+	/**
+	 * Get the harvested area, in acres.
+	 */
+	public double getTotalArea() {
+		return totalArea;
 	}
 	
 	/**
@@ -120,9 +130,11 @@ public class AggregateHarvester implements Steppable {
 		
 		// Reset
 		stemBiomass = 0;
+		totalArea = 0;
 		totalBiomass = 0;
 		parcelsHarvested = 0;
-		
+				
+		double pixelArea = Forest.getInstance().getPixelArea();
 		Forest forest = Forest.getInstance();		
 		while (!requests.isEmpty()) {
 			
@@ -130,6 +142,7 @@ public class AggregateHarvester implements Steppable {
 			HarvestRequest request = requests.remove(0);
 			Pair<Double, Double> result = forest.harvest(request.stands);
 			stemBiomass += result.getValue0();
+			totalArea += (request.stands.length * pixelArea);
 			totalBiomass += result.getValue1();
 			parcelsHarvested++;
 			
