@@ -22,7 +22,7 @@ public class VipAgglomeration extends VipBase {
 		
 		// Return the agglomeration bonus if a neighbor is enrolled, base bonus otherwise
 		for (ParcelAgent agent : agents) {
-			if (((NipfAgent)agent).inVip()) {
+			if (agent != null && ((NipfAgent)agent).inVip()) {
 				return agglomerationBonus;
 			}
 		}

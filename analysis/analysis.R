@@ -105,10 +105,9 @@ analysis('harvestedParcels', 'Harvested Parcels', 'Owners', F)
 analysis('economicRequests', 'Economic Optimizer Harvest Reqeusts', 'Parcels / Owners', F)
 analysis('harvestArea', 'Harvested Area', 'acres', F)
 
+analysis('recreationAccess', 'Open Access Forest', 'Forest Area (sq. km.)', F)
 analysis('vipAwareness', 'VIP Awareness', 'NIPFOs', F)
 analysis('vipEnrollment', 'VIP Enrollment', 'NIPFOs', F)
-
-analysis('recreationAccess', 'Open Access Forest', 'Forest Area (sq. km.)', F)
 
 #analysis('harvestedBiomass', 'Harvested Biomass', 'Metric Tons (MT) Dry Weight', T)
 #analysis('harvestedStems', 'Harvested Stems', 'Metric Tons (MT) Dry Weight', T)

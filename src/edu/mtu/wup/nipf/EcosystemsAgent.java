@@ -27,8 +27,8 @@ public class EcosystemsAgent extends NipfAgent {
 	@Override
 	protected void doAgentPolicyOperation() {
 
-		// If we never intend to harvest, just return
-		if (!intendsToHarvest) {
+		// If we never intend to harvest, or we are already in a VIP just return
+		if (!intendsToHarvest || inVip()) {
 			return;
 		}
 

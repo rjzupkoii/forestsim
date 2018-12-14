@@ -52,6 +52,9 @@ public abstract class VipBase extends PolicyBase {
 		// thus, they should call nipfoInformed() if they take the information
 		List<ParcelAgent> neighbors = state.getConnectedNeighbors(agent);
 		for (ParcelAgent neighbor : neighbors) {
+			if (neighbor == null) {
+				continue;
+			}
 			((NipfAgent)neighbor).informOfVip();
 		}
 	}
