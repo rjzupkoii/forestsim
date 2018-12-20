@@ -19,7 +19,7 @@ public class EconomicAgent extends NipfAgent {
 	private final static int projectionWindow = 100;
 	
 	private double rate = 0.0;	
-	private double targetHarvest = -1;
+	private double targetHarvest = 40;
 	
 	private long nextHarvest = -1;
 	private long nextNpv = -1;
@@ -47,20 +47,16 @@ public class EconomicAgent extends NipfAgent {
 	
 	@Override
 	protected void doHarvestOperation() {
-		
-		// We always want to harvest our entire parcel, not realistic, but meh
-		if (targetHarvest == -1) {
-			targetHarvest = getParcelArea();
-		}
-		
-		// If we haven't determined when the next NVP calculation should be, do so
-		if (nextNpv == -1) {
-			nextNpv = projectNvp();
-			nextNpv = (nextNpv != -1) ? state.schedule.getSteps() + nextNpv : -1;
+
+		// If it is time for the next harvest, do so
+		if (nextHarvest != -1 && state.schedule.getSteps() >= nextHarvest) {
+			List<Stand> stands = Harvesting.getHarvestableStands(getParcel(), getHarvestDbh());
+			AggregateHarvester.getInstance().requestHarvest(this, stands);
+			return;
 		}
 		
 		// Should we do a harvest projection?
-		if (nextNpv >= state.schedule.getSteps()) {
+		if (nextNpv != -1 && state.schedule.getSteps() >= nextNpv) {
 			projectHarvests();
 			
 			// Shouldn't happen, edge case
@@ -69,11 +65,9 @@ public class EconomicAgent extends NipfAgent {
 			}
 		}
 		
-		// If it is time for the next harvest, do so
-		if (nextHarvest != -1 && state.schedule.getSteps() >= nextHarvest) {
-			List<Stand> stands = Harvesting.getHarvestableStands(getParcel(), getHarvestDbh());
-			AggregateHarvester.getInstance().requestHarvest(this, stands);
-		}
+		// If we haven't determined when the next NVP calculation should be, do so
+		nextNpv = projectNvp();
+		nextNpv = (nextNpv != -1) ? state.schedule.getSteps() + nextNpv : -1;
 	}
 	
 	@Override

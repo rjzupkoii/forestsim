@@ -497,7 +497,7 @@ public abstract class ForestSim extends SimState {
 	protected void createParcelAgents() {		
 		int discarded = 0;
 		Bag geometries = parcelLayer.getGeometries();
-		agents = new ParcelAgent[geometries.numObjs];
+		List<ParcelAgent> working = new ArrayList<ParcelAgent>();
 		for (int ndx = 0; ndx < geometries.numObjs; ndx++) {
 			// Create the geometry for the agent and index it
 			LandUseGeomWrapper geometry = (LandUseGeomWrapper)geometries.objs[ndx];
@@ -507,6 +507,8 @@ public abstract class ForestSim extends SimState {
 			ParcelAgent agent = createAgent(geometry, ((ParameterBase)getModelParameters()).getEconomicAgentPercentage());
 			if (agent == null) {
 				discarded++;
+				geometries.remove(ndx);
+				ndx--;
 				continue;
 			}
 			
@@ -514,9 +516,17 @@ public abstract class ForestSim extends SimState {
 			geometries.objs[ndx] = agent.getGeometry();
 			
 			// Schedule the agent
-			agents[ndx] = agent;
+			//agents[ndx] = agent;
+			working.add(agent);
 			schedule.scheduleRepeating(agent);
 		}
+		
+		// Reconcile the working list of agents with the actual list
+		agents = new ParcelAgent[geometries.numObjs];
+		for (int ndx = 0; ndx < working.size(); ndx++) {
+			agents[ndx] = working.get(ndx);
+		}
+		working.clear();
 		
 		// If we discarded anything, let the user know
 		if (discarded != 0) {

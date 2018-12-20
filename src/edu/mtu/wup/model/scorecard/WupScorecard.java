@@ -107,6 +107,9 @@ public class WupScorecard implements Scorecard {
 		
 		// Have the agents update their parcels
 		for (ParcelAgent agent : state.getParcelAgents()) {
+			if (agent == null) {
+				continue;
+			}
 			agent.updateShapefile();
 			state.updateAgentGeography(agent);
 		}
