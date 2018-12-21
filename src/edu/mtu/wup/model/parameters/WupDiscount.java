@@ -16,7 +16,7 @@ public class WupDiscount extends WupParameters {
 		setEconomicAgentPercentage(0.3);
 		setEconomicNpvDiscountRate(0.08, 0.02);		// http://www.sewall.com/files/timberlandreport/v8n3.pdf
 		setEcosystemsAgentHarvestOdds(0.02);		// MR, 2% mean
-		setMooIntendsToHavestOdds(0.26);			// 18% of all NIPFOs
+		setMooIntendsToHavestOdds(0.27);			// Butler, 2008
 		setNipfoWth(523.23, 123.12);
 		
 		setLoggingCapacity(1160);
