@@ -10,7 +10,6 @@ public class WupAgglomeration extends WupParameters {
 	public WupAgglomeration() {
 		// Select the policy
 		setVipProgram(VipRegime.AGGLOMERATION);
-		setVipCoolDown(10);
 		setOutputDirectory("out/agglomeration");
 		
 		// Set the model variables

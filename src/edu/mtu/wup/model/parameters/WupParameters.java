@@ -30,13 +30,7 @@ public abstract class WupParameters extends ParameterBase {
 	 */
 	public final static int MillageRate = 100;
 	
-	/**
-	 * Assessed property value per acre.
-	 */
-	public final static double PropertyValue = 1000.0;
-
 	private int loggingCapacity = 0;
-	private int vipCoolDown = 0;
 	private double ecosystemsNipfoHarvestOdds = 0.0;
 	private double mooIntendsToHavestOdds = 0.0;
 	private long seed = 0;
@@ -115,14 +109,7 @@ public abstract class WupParameters extends ParameterBase {
 	public long getSeed() {
 		return seed;
 	}
-	
-	/**
-	 * Get the VIP cool down rate.
-	 */
-	public int getVipCoolDown() {
-		return vipCoolDown;
-	}
-	
+		
 	/**
 	 * Get the VIP that is being run.
 	 */
@@ -187,12 +174,5 @@ public abstract class WupParameters extends ParameterBase {
 	public void setVipProgram(VipRegime value) {
 		VipFactory.getInstance().selectVip(value);
 		vip = value;
-	}
-
-	/**
-	 * Set the VIP cool down rate.
-	 */
-	public void setVipCoolDown(int value) {
-		vipCoolDown = value;
 	}
 }

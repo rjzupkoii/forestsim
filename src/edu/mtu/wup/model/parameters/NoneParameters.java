@@ -10,7 +10,6 @@ public class NoneParameters extends WupParameters {
 	public NoneParameters() {	
 		// Select the policy
 		setVipProgram(VipRegime.NONE);
-		setVipCoolDown(10);
 		setOutputDirectory("out/none");
 		
 		// Set the model variables

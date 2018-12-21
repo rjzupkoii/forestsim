@@ -10,7 +10,6 @@ public class WupDiscount extends WupParameters {
 	public WupDiscount() {
 		// Select the policy
 		setVipProgram(VipRegime.DISCOUNT);
-		setVipCoolDown(10);
 		setOutputDirectory("out/discount");
 		
 		// Set the model variables

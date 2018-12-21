@@ -15,8 +15,6 @@ public abstract class NipfAgent extends ParcelAgent {
 	private boolean vipAware = false;
 	private boolean vipEnrollee = false;
 	protected boolean vipHarvested = false;
-	private int vipCoolDown = 0;
-	private int vipCoolDownDuration = 0;
 	
 	// Individual attributes
 	private boolean taxConcern = false;
@@ -59,12 +57,6 @@ public abstract class NipfAgent extends ParcelAgent {
 			return;
 		}
 		
-		// Return if we don't have enough area
-		if (getParcelArea() < vip.getMinimumAcerage()) {
-			vipDisqualifed = true;
-			return;
-		}
-
 		// If we aren't aware if the VIP see if we should be
 		if (!vipAware) {
 			if (vipInformedRate < state.random.nextDouble()) {
@@ -73,12 +65,13 @@ public abstract class NipfAgent extends ParcelAgent {
 			awareOfVip();
 		}
 		
-		// Update the cool down for the VIP and return if the agent is still cooling down
-		vipCoolDown -= (vipCoolDown > 0) ? 1 : 0;
-		if (vipCoolDown > 0) {
+		// Once we are aware, check to see if we have enough acreage
+		// no point in checking status any more if we don't qualify
+		if (getParcelArea() < vip.getMinimumAcerage()) {
+			vipDisqualifed = true;
 			return;
 		}
-		
+				
 		doAgentPolicyOperation();
 	}
 
@@ -118,7 +111,6 @@ public abstract class NipfAgent extends ParcelAgent {
 
 	protected void unenrollInVip() {
 		vipEnrollee = false;
-		vipCoolDown = vipCoolDownDuration;
 		VipFactory.getInstance().getVip().unenroll(getParcel());
 		getGeometry().setEnrolledInVip(false);
 		state.updateAgentGeography(this);
@@ -172,13 +164,6 @@ public abstract class NipfAgent extends ParcelAgent {
 		taxConcern = value;
 	}
 	
-	/**
-	 * Set the VIP cool down duration.
-	 */
-	public void setVipCoolDownDuration(int value) {
-		vipCoolDownDuration = value;
-	}
-
 	/**
 	 * Set the WTH for the agent and calculate how much they want for the parcel
 	 */

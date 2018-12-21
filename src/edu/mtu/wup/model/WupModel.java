@@ -122,7 +122,6 @@ public abstract class WupModel extends ForestSim {
 	 */
 	private NipfAgent updateNipfAttributes(NipfAgent agent) {
 		agent.setPhaseInRate(WupParameters.LandTenurePhaseInRate);
-		agent.setVipCoolDownDuration(getParameters().getVipCoolDown());
 		return agent;
 	}
 

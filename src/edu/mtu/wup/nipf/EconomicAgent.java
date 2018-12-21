@@ -66,7 +66,7 @@ public class EconomicAgent extends NipfAgent {
 		}
 		
 		// If we haven't determined when the next NVP calculation should be, do so
-		nextNpv = projectNvp();
+		nextNpv = projectGrowth();
 		nextNpv = (nextNpv != -1) ? state.schedule.getSteps() + nextNpv : -1;
 	}
 	
@@ -88,7 +88,7 @@ public class EconomicAgent extends NipfAgent {
 	 * 
 	 * @return Number of time steps from now.
 	 */
-	private int projectNvp() {
+	private int projectGrowth() {
 		// Note the stands for the projection
 		Forest forest = Forest.getInstance();
 		Point[] points = getParcel();
@@ -98,20 +98,19 @@ public class EconomicAgent extends NipfAgent {
 		}
 		
 		// Prime things with the current year
-		double[] values = new double[projectionWindow];
-		values[0] = getMean(projection);
+		double meanDbh = getMean(projection);
 		
-		for (int ndx = 1; ndx < projectionWindow; ndx++) {
+		for (int year = 1; year < projectionWindow; year++) {
 			// Check the previous years work
-			if (values[ndx - 1] >= Harvesting.PulpwoodDbh) {
-				return (ndx - 1);
+			if (meanDbh >= Harvesting.PulpwoodDbh) {
+				return (year - 1);
 			}
 			
 			// Advance by one year
 			for (int ndy = 0; ndy < projection.length; ndy++) {
 				projection[ndy] = forest.getGrowthModel().growStand(projection[ndy]);
 			}
-			values[ndx] = getMean(projection);
+			meanDbh = getMean(projection);
 		}
 		
 		// In theory, impossible, but guard code
